@@ -1,4 +1,0 @@
-codered
-=======
-
-Code Red Demo

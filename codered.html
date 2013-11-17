@@ -1,9 +1,74 @@
 <head>
   <title>codered</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #navbar {margin-left:0px;padding-top:12px;}
+    #navbar li {padding-left:1%;margin-left:1%;padding-right:1%;}
+    .nav-pills li a {background-color:#FAFAFF;border:solid 1px #CCC;}
+    #navbar li:last-child {border-right:none;}
+    html,
+    body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+    }
+
+    /* Wrapper for page content to push down footer */
+      #wrap {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        /* Negative indent footer by it's height */
+        margin: 0 auto -60px;
+      }
+
+      /* Set the fixed height of the footer here */
+      #push,
+      #footer {
+        height: 60px;
+      }
+      #footer {
+        background-color: #f5f5f5;
+      }
+
+      /* Lastly, apply responsive CSS fixes as necessary */
+        #footer {
+          margin-left: -20px;
+          margin-right: -20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+  </style>
 </head>
 
 <body>
-  {{> hello}}
+  <div id="wrap">
+    <div class="container-fluid">
+      <div class="tab-content">
+	<div class="tab-pane active" id="home">
+	  <p>Home Section</p>
+	</div>
+	<div class="tab-pane" id="friends">
+	  <p>Friends Section</p>
+	</div>
+	<div class="tab-pane" id="log">
+	  <p>Log Section</p>
+	</div>
+      </div>
+    </div>
+  </div>
+  <div id="footer">
+    <div class="container-fluid">
+      <div class="text-center">
+	<ul id="navbar" class="nav nav-pills">
+	  <li class="active">
+	    <a href="#home" data-toggle="tab"><i class="icon-home"></i> Home</a>
+	  </li>
+	  <li><a href="#friends" data-toggle="tab"><i class="icon-user"></i> Friends</a></li>
+	  <li><a href="#log" data-toggle="tab"><i class="icon-envelope"></i> Log</a></li>
+	</ul>
+      </div>      
+    </div>
+  </div>
 </body>
 
 <template name="hello">

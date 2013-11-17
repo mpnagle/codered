@@ -22,10 +22,10 @@ Welcome to CodeRed
   <div id="wrap">
     <div class="container-fluid">
       <div class="tab-content">
-	<div class="tab-pane active" id="home">
+	<div class="tab-pane" id="home">
 	  <p>{{>main}}</p>
 	</div>
-	<div class="tab-pane" id="friends">
+	<div class="tab-pane active" id="friends">
 	  <p>{{>friends}}</p>
 	</div>
 	<div class="tab-pane" id="log">
@@ -115,20 +115,38 @@ usernameHere sent a red alert at {{timestamp}}
   </li>
 </template>
 
+<template name = "userEntry">
+  <li>
+    <a href="#">
+      <div class="pull-left log-icon">
+	<i class="icon-user icon-2x"></i>
+      </div>
+      <div class="pull-left log-details" style="width:80%">
+	{{firstAddress emails}}
+	<button class="pull-right btn btn-mini btn-danger removeUser"
+		data-userid="{{_id}}"		
+		><i class="icon-remove" data-userid="{{_id}}"></i></button>
+      </div>
+      <div class="clearfix"></div>
+    </a>
+  </li>
+</template>
+
 <template name = "friends">
 
-<ul class="nav nav-tabs nav-stacked">
-{{#each users}}
-
-<li><a href="#">
-  
-  {{_id}}
-  
-</a></li>
-{{/each}}
-
-Add Friend's Email Here: <input type="text" id="add friend"/>
-<button type="button" id="submit" class="btn">Submit</button>
-
+<ul id="loglist" class="nav nav-tabs nav-stacked">
+  <li id="select-user-line">
+    <select id="friendtoadd" class="pull-left" style="width:60%">
+      <option value="">Add New User</option>
+      {{#each users}}
+      <option value="{{_id}}">{{emails.0.address}}</option>
+      {{/each}}
+    </select>
+    <button id="submit" class="pull-right btn"><i class="icon-plus"></i> Add</button>
+    <div class="clearfix"></div>
+  </li>
+  {{#each friends}}
+  {{>userEntry}}
+  {{/each}}
 </ul>
 </template>

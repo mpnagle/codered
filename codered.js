@@ -3,6 +3,9 @@ AlertEvents = new Meteor.Collection("alertsevents");
 
 if (Meteor.isClient) {
 
+    Meteor.subscribe("allUsers");
+    Meteor.subscribe("allUserData");
+
 
 
   Template.main.events({
@@ -39,14 +42,6 @@ if (Meteor.isClient) {
 	      }
 	      );
 	  
-		      
-	  
-		  
-	  
-	  //	  console.log(Alerts.find(
-	  //		  {sort: {$natural: -1}}
-	  //		  ));
-	      //	  AlertEvents.insert({
 	  console.log($("#message").val());
       }
   });
@@ -75,54 +70,53 @@ if (Meteor.isClient) {
       return Alerts.find({alertLevel:2, status:0}).fetch();
   }
 
-
-  Template.friends.users = function()
-      {
-	  return Meteor.users.find({}).fetch();
+  Template.friends.friends = function() {
+      var friendIds = [];
+      var currentUser = Meteor.user();
+      if (currentUser.hasOwnProperty("friends")) {
+	  friendIds = currentUser.friends;
       }
+      var users = Meteor.users.find({"_id":{"$in":friendIds}}).fetch();
+      console.log(users);
+      return users;
+  };
+
+  Template.friends.users = function() {
+      var users = Meteor.users.find({}).fetch();
+      console.log(users);
+      return users;
+  };
   
   Template.friends.events({
       'click #submit': function(){
-	  /* 
-	  emailAddress = $("#submit").val();
-	  
+	  var contactId = $('#friendtoadd').val();
 	  var currentUser = Meteor.user();
-	  currentId = currentUser._id;
-	  if (currentUser.hasOwnProperty('friends'))
-	      {
-		  var friends = currentUser.friends;
-		  friends.append(emailAddress);
-
-	      }
-	  else
-	      {
-		  var friends = [emailAddress];
-	      }
-
-	  Meteor.users.update({_id:currentId},{$set:{"friends":friends}});
-
+	  if (!currentUser.hasOwnProperty("friends")) {
+	      currentUser.friends = [];
+	  }
+	  if (currentUser.friends.indexOf(contactId) == -1) {
+	      currentUser.friends.push(contactId);
+	  }
+	  Meteor.users.update(currentUser._id,{"$set":{"friends":currentUser.friends}});
+      },
+      'click .removeUser': function(event){
+	  var contactId = $(event.target).data("userid");
+	  var currentUser = Meteor.user();
+	  if (!currentUser.hasOwnProperty("friends")) {
+	      currentUser.friends = [];
+	  }
+	  if (currentUser.friends.indexOf(contactId) != -1) {
+	      currentUser.friends.splice(currentUser.friends.indexOf(contactId),1);
+	  }
+	  Meteor.users.update(currentUser._id,{"$set":{"friends":currentUser.friends}});
       }
-      
-	  */
-      }});
-
-	  
-		  
-      
-
+  });
 
   Template.logEntry.helpers({
       icon_map: function(alertType) {
 	  return {
 	      "created":"icon-plus-sign"
 	  }[alertType];
-      },
-      firstAddress: function(arrayObject) {
-	  if (arrayObject && arrayObject.length > 0) {
-	      return arrayObject[0].address
-	  } else {
-	      return null;
-	  }
       },
       timeAgo:function(time) {
 	  var now = new Date().getTime();
@@ -139,10 +133,48 @@ if (Meteor.isClient) {
       }
   });
 
+  Handlebars.registerHelper("firstAddress",
+			    function(arrayObject) {
+				if (arrayObject && arrayObject.length > 0) {
+				    return arrayObject[0].address
+				} else {
+				    return null;
+				}
+			    });
+			      
+
 
 }
 if (Meteor.isServer) {
+    Meteor.publish("allUsers", function () {
+        return Meteor.users.find({});
+    });
+    Meteor.publish("allUserData", function () {
+        return Meteor.users.find({}, {fields: {"emails.address": 1}});
+    });
   Meteor.startup(function () {
-    // code to run on server at startup
+      Meteor.methods({
+	  'get_users_by_ids':function(userIds) {
+	      return Meteor.users.find({"_id":{"$in":userIds}}).fetch();
+	  },
+	  'get_all_users':function() {
+	      return Meteor.users.find({}).fetch();
+	  },
+	  'update_user':function(user) {
+	      Meteor.users.update({"_id":user._id});
+	  }
+      });
   });
 }
+
+Meteor.users.allow({
+    "insert":function(userId,checkin) {
+	return true;
+    },
+    "remove":function(userId,checkin) {
+	return true;
+    },
+    "update":function(userId,checkin) {
+	return true;
+    }
+});

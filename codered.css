@@ -1,17 +1,26 @@
 /* CSS declarations go here */
 #navbar {margin-left:6%;padding-top:12px;}
 #navbar li {padding-left:1%;margin-left:1%;padding-right:1%;}
-.nav-pills li a {background-color:#FAFAFF;border:solid 1px #CCC;}
+.nav-pills li a {
+    background-color:#333;
+    border:solid 1px #CCC;
+    color:#FFF;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
 #navbar li:last-child {border-right:none;}
 html,
 body {
     height: 100%;
+    font-weight:300;
 /* The html and body elements cannot have any padding or margin. */
 }
 
 body {padding-right:0px;padding-left:0px;}
 
 .nav-tabs.nav-stacked > li:last-child > a { border-bottom-right-radius:0px;border-bottom-left-radius:0px}
+.nav-tabs.nav-stacked > li:first-child > a { border-top-right-radius:0px;border-top-left-radius:0px}
 
 
 /* Wrapper for page content to push down footer */
@@ -28,7 +37,8 @@ body {padding-right:0px;padding-left:0px;}
     height: 60px;
 }
 #footer {
-    background-color: #f5f5f5;
+    background-color: #c0c0c0;
+    border-top:solid thin #AAA;
     position:fixed;
     width:100%;
 }
@@ -40,3 +50,38 @@ body {padding-right:0px;padding-left:0px;}
     padding-left: 20px;
     padding-right: 20px;
 }
+
+.button-list {
+    list-style:none;
+    text-align:center;
+    margin-left:0;
+    width:100%;
+}
+
+.button-list li {
+    margin-bottom:5px;
+    padding-left:5%;
+    padding-right:5%;
+    width:90%;
+}
+
+.button-list li button {
+    width:100%;   
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.button-list li textarea {
+    padding:1%;
+    height:100px;
+    width:98%;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+#loglist {color:#333;font-weight:300;}
+#loglist li a, #loglist li {color:#333;}
+.log-details {position:relative;left:6px;top:2px;}
+

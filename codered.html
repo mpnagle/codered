@@ -1,6 +1,7 @@
 <head>
   <title>codered</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -21,13 +22,13 @@ Welcome to CodeRed
   <div id="wrap">
     <div class="container-fluid">
       <div class="tab-content">
-	<div class="tab-pane active" id="home">
+	<div class="tab-pane" id="home">
 	  <p>{{>main}}</p>
 	</div>
 	<div class="tab-pane" id="friends">
 	  <p>{{>friends}}</p>
 	</div>
-	<div class="tab-pane" id="log">
+	<div class="tab-pane active" id="log">
 	  {{>log}}
 	</div>
       </div>
@@ -38,10 +39,10 @@ Welcome to CodeRed
       <div class="text-center">
 	<ul id="navbar" class="nav nav-pills">
 	  <li class="active">
-	    <a href="#home" data-toggle="tab"><i class="icon-home"></i> Home</a>
+	    <a href="#home" data-toggle="tab"><i class="icon-home icon-white"></i> Home</a>
 	  </li>
-	  <li><a href="#friends" data-toggle="tab"><i class="icon-user"></i> Friends</a></li>
-	  <li><a href="#log" data-toggle="tab"><i class="icon-envelope"></i> Log</a></li>
+	  <li><a href="#friends" data-toggle="tab"><i class="icon-user icon-white"></i> Friends</a></li>
+	  <li><a href="#log" data-toggle="tab"><i class="icon-envelope icon-white"></i> Log</a></li>
 	</ul>
       </div>      
     </div>
@@ -51,16 +52,27 @@ Welcome to CodeRed
 
 <template name="main">
 
-{{> showRedAlerts}}
+  <h2 class="text-center">CodeRed</h2>
+  <ul class="button-list">
+    <li>
+      <button id="red" class="btn btn-danger">RED</button>
+    </li>
+    <li>
+      <button id="yellow" class="btn btn-warning">YELLOW</button>
+    </li>
+    <li>
+      <button id="green" class="btn btn-success">GREEN</button>
+    </li>
+    <li><hr /></li>
+    <li>
+      <textarea id="message" placeholder="What's up?"></textarea>
+    </li>
+    <li><hr /></li>
+    <li>
+      <button type="submit" id="submit" class="btn">Submit</button>
+    </li>
+  </ul>
 
-  <h2>Alert Level: {{alertLevel}} </h2>
-<button id="red" class="btn btn-danger">RED</button>
-<button id="yellow" class="btn btn-warning">YELLOW</button>
-<button id="green" class="btn btn-success">GREEN</button>
-
-<p>
-<input type="text" id="message" placeholder="What's up?"/>
-<button type="submit" id="submit" class="btn">Submit</button>
 
 </template>
 
@@ -80,7 +92,7 @@ usernameHere sent a red alert at {{timestamp}}
 </template>
 
 <template name="log">
-  <ul class="nav nav-tabs nav-stacked">
+  <ul id="loglist" class="nav nav-tabs nav-stacked">
 {{#each logEntries}}
 {{>logEntry}}
 {{/each}}
@@ -88,7 +100,19 @@ usernameHere sent a red alert at {{timestamp}}
 </template>
 
 <template name = "logEntry">
-  <li><a href="#">Alert number {{alertId}} was {{state}} at {{time}}</a></li>
+  <li>
+    <a href="#">
+      <div class="pull-left log-icon">
+	<i class="{{icon_map state}} icon-2x"></i>
+      </div>
+      <div class="pull-left log-details">
+	{{firstAddress user.emails}} <br/>
+	<i class="muted">{{timeAgo time}}</i>
+      </div>
+      
+      <div class="clearfix"></div>
+    </a>
+  </li>
 </template>
 
 <template name = "friends">

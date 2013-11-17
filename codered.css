@@ -61,12 +61,13 @@ body {padding-right:0px;padding-left:0px;}
 .button-list li {
     margin-bottom:5px;
     padding-left:5%;
-    padding-right:5%;
+    padding-right:5%;    
     width:90%;
 }
 
 .button-list li button {
-    width:100%;   
+    width:100%;
+    padding:10px;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
@@ -74,7 +75,7 @@ body {padding-right:0px;padding-left:0px;}
 
 .button-list li textarea {
     padding:1%;
-    height:100px;
+    height:80px;
     width:98%;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;

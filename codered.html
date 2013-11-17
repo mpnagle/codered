@@ -1,0 +1,134 @@
+<head>
+  <title>codered</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+  {{#if currentUser}}
+  {{> nav}}
+  {{else}}
+  {{> login}}
+  {{/if}}
+</body>
+
+<template name="login">
+Welcome to CodeRed
+<p>
+{{loginButtons}}
+</template>
+
+<template name="nav">
+  <div id="wrap">
+    <div class="container-fluid">
+      <div class="tab-content">
+	<div class="tab-pane active" id="home">
+	  <p>{{>main}}</p>
+	</div>
+	<div class="tab-pane" id="friends">
+	  <p>{{>friends}}</p>
+	</div>
+	<div class="tab-pane" id="log">
+	  {{>log}}
+	</div>
+      </div>
+    </div>
+  </div>
+  <div id="footer">
+    <div class="container-fluid">
+      <div class="text-center">
+	<ul id="navbar" class="nav nav-pills">
+	  <li class="active">
+	    <a href="#home" data-toggle="tab"><i class="icon-home icon-white"></i> Home</a>
+	  </li>
+	  <li><a href="#friends" data-toggle="tab"><i class="icon-user icon-white"></i> Friends</a></li>
+	  <li><a href="#log" data-toggle="tab"><i class="icon-envelope icon-white"></i> Log</a></li>
+	</ul>
+      </div>      
+    </div>
+  </div>
+</template>
+
+
+<template name="main">
+  <ul class="button-list">
+    <li>
+      <button id="red" class="btn btn-danger">RED</button>
+    </li>
+    <li>
+      <button id="yellow" class="btn btn-warning">YELLOW</button>
+    </li>
+    <li>
+      <button id="green" class="btn btn-success">GREEN</button>
+    </li>
+    <li>
+      <textarea id="message" placeholder="What's up?"></textarea>
+    </li>
+    <li>
+      <button type="submit" id="submit" class="btn">Submit</button>
+    </li>
+  </ul>
+
+
+</template>
+
+<template name="showRedAlerts">
+
+{{#each redAlert}}
+
+  <ul class="nav nav-tabs nav-stacked">
+<li><a href="#">
+usernameHere sent a red alert at {{timestamp}}
+
+<input type="checkbox">Acknowledged</>
+<input type="checkbox">Resolved</>
+  </ul>  
+{{/each}}
+</a></li>
+</template>
+
+<template name="log">
+  <ul id="loglist" class="nav nav-tabs nav-stacked">
+{{#each logEntries}}
+{{>logEntry}}
+{{>logEntry}}
+{{>logEntry}}
+{{>logEntry}}
+{{>logEntry}}
+{{/each}}
+  </ul>  
+</template>
+
+<template name = "logEntry">
+  <li>
+    <a href="#">
+      <div class="pull-left log-icon">
+	<i class="{{icon_map state}} icon-2x"></i>
+      </div>
+      <div class="pull-left log-details">
+	{{firstAddress user.emails}} <br/>
+	<i class="muted">{{timeAgo time}}</i>
+      </div>
+      
+      <div class="clearfix"></div>
+    </a>
+  </li>
+</template>
+
+<template name = "friends">
+
+<ul class="nav nav-tabs nav-stacked">
+{{#each users}}
+
+<li><a href="#">
+  
+  {{_id}}
+  
+</a></li>
+{{/each}}
+
+Add Friend's Email Here: <input type="text" id="add friend"/>
+<button type="button" id="submit" class="btn">Submit</button>
+
+</ul>
+</template>

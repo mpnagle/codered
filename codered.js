@@ -21,12 +21,12 @@ if (Meteor.isClient) {
       
       'click #submit' : function() {
 	  
-	  var lastObject = ""
+	  var lastObject = "";
 	  Alerts.insert({
 	      alertLevel: Session.get("alertLevel"), 
 	      status: 0,
 	      message: $("#message").val(),
-	      "userId":Meteor.user()._id
+	      "userId":Meteor.userId()
 		      },
 
 	      function(error,result){
@@ -119,7 +119,7 @@ if (Meteor.isClient) {
 	  }[alertType];
       },
       firstAddress: function(arrayObject) {
-	  if (arrayObject.length > 0) {
+	  if (arrayObject && arrayObject.length > 0) {
 	      return arrayObject[0].address
 	  } else {
 	      return null;

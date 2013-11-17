@@ -105,10 +105,6 @@ red alert sent at {{timestamp}}
   <ul id="loglist" class="nav nav-tabs nav-stacked">
 {{#each logEntries}}
 {{>logEntry}}
-{{>logEntry}}
-{{>logEntry}}
-{{>logEntry}}
-{{>logEntry}}
 {{/each}}
   </ul>  
 </template>
@@ -120,7 +116,7 @@ red alert sent at {{timestamp}}
 	<i class="{{icon_map state}} icon-2x"></i>
       </div>
       <div class="pull-left log-details">
-	{{firstAddress user.emails}} <br/>
+	{{logMessage alert author state user}}<br/>
 	<i class="muted">{{timeAgo time}}</i>
       </div>
       

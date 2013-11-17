@@ -84,6 +84,7 @@ body {padding-right:0px;padding-left:0px;}
 
 #loglist {color:#333;font-weight:300;}
 #loglist li a, #loglist li {color:#333;}
-.log-details {position:relative;left:6px;top:2px;}
+.log-details {position:relative;left:8px;top:2px;width:80%}
+.log-icon {position:relative;top:5px;}
 
 #select-user-line {padding:4%;padding-bottom:2%;padding-top:0px;width:92%}

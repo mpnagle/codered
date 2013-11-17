@@ -29,20 +29,16 @@ if (Meteor.isClient) {
 	      alertLevel: Session.get("alertLevel"), 
 	      status: 0,
 	      message: $("#message").val(),
-	      "userId":Meteor.userId()
-		      },
-
+	      "userId":Meteor.userId()},
 	      function(error,result){
 		  
 		  AlertEvents.insert({
 			  "alertId": result,
 			  "state":"created",
 			  "time": (new Date()).getTime(),
+		          "author":Meteor.userId()
 		      });
-	      }
-	      );
-	  
-	  console.log($("#message").val());
+	      });
       }
   });
 
@@ -60,6 +56,7 @@ if (Meteor.isClient) {
 	  alertEvents.map(function(event) {
 	      event.alert = Alerts.findOne({'_id':event.alertId});
 	      event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
+	      event.author = Meteor.users.findOne({'_id':event.author});	  
 	  });
       }
       return alertEvents;
@@ -114,7 +111,9 @@ if (Meteor.isClient) {
   Template.logEntry.helpers({
       icon_map: function(alertType) {
 	  return {
-	      "created":"icon-plus-sign"
+	      "created":"icon-bell",
+	      "acknowledged":"icon-eye-open",
+	      "resolved":"icon-check"
 	  }[alertType];
       },
       timeAgo:function(time) {
@@ -135,6 +134,12 @@ if (Meteor.isClient) {
   Template.redAlertCheckbox.events({
 	  
 	  'click #acknowledged':function(){
+	      AlertEvents.insert({
+		  "alertId":this._id,
+		  "state":"acknowledged",
+		  "time":(new Date()).getTime(),
+		  "author":Meteor.user()._id
+	      });
 	      console.log("acknowledged");
 
 	      id = this._id;
@@ -143,6 +148,12 @@ if (Meteor.isClient) {
 
 	  },
 	  'click #resolved':function(){
+	      AlertEvents.insert({
+		  "alertId":this._id,
+		  "state":"resolved",
+		  "time":(new Date()).getTime(),
+		  "author":Meteor.user()._id
+	      });
 	      console.log("resolved");
 	      console.log(this);
 	      id = this._id;
@@ -157,6 +168,21 @@ if (Meteor.isClient) {
 				      return arrayObject[0].address
 				  } else {
 				      return null;
+				  }
+			      });
+
+    Handlebars.registerHelper("logMessage",
+			      function(alert,author,state,user) {
+				  console.log(state);
+				  if (state == "created") {
+				      return user.emails[0].address + " created an alert: " + alert.message;
+				  } else if (state == "acknowledged") {
+				      console.log(author);
+				      return author.emails[0].address + " acknowledged "+user.emails[0].address + "'s alert";
+				  } else if (state == "resolved") {
+				      return author.emails[0].address + " resolved "+user.emails[0].address + "'s alert";
+				  } else {
+				      return "";
 				  }
 			      });
 			      

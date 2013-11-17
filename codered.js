@@ -1,4 +1,5 @@
 Alerts = new Meteor.Collection("alerts");
+AlertEvents = new Meteor.Collection("alertsevents");
 
 if (Meteor.isClient) {
 
@@ -16,10 +17,30 @@ if (Meteor.isClient) {
       },
       
       'click #submit' : function() {
+	  
+	  var lastObject = ""
 	  Alerts.insert({
 	      alertLevel: Session.get("alertLevel"), 
 	      message: $("#message").val()
-	  })
+		      },
+	      function(error,result){
+		  
+		  AlertEvents.insert({
+			  "alertId": result,
+			  "state":"created",
+			  "time": (new Date()).getTime(),
+		      });
+	      }
+	      );
+	  
+		      
+	  
+		  
+	  
+	  //	  console.log(Alerts.find(
+	  //		  {sort: {$natural: -1}}
+	  //		  ));
+	      //	  AlertEvents.insert({
 	  console.log($("#message").val());
       }
   });
@@ -30,6 +51,9 @@ if (Meteor.isClient) {
       return Session.get("alertLevel");
   }
 
+  Template.log.logEntries = function(){
+      return AlertEvents.find({}).fetch();
+  }
 
 }
 if (Meteor.isServer) {

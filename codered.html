@@ -64,22 +64,12 @@ Welcome to CodeRed
 
 <template name="log">
   <ul class="nav nav-tabs nav-stacked">
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
-    <li><a href="#">Hello world</a></li>
+{{#each logEntries}}
+{{>logEntry}}
+{{/each}}
   </ul>  
+</template>
+
+<template name = "logEntry">
+  <li><a href="#">Alert number {{alertId}} was {{state}} at {{time}}</a></li>
 </template>

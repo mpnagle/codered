@@ -59,11 +59,12 @@ if (Meteor.isClient) {
       if (alertEvents.length > 0) {
 	  alertEvents.map(function(event) {
 	      event.alert = Alerts.findOne({'_id':event.alertId});
-	      event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
+	      //event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
 	  });
       }
       return alertEvents;
   }
+
 
   Template.showRedAlerts.redAlert = function(){
       
@@ -132,18 +133,35 @@ if (Meteor.isClient) {
 	  }
       }
   });
+  
+  Template.redAlertCheckbox.events({
+	  
+	  'click #acknowledged':function(){
+	      console.log("acknowledged");
 
-  Handlebars.registerHelper("firstAddress",
-			    function(arrayObject) {
-				if (arrayObject && arrayObject.length > 0) {
-				    return arrayObject[0].address
-				} else {
-				    return null;
-				}
-			    });
+	      id = this._id;
+	      
+	      Alerts.update({_id:id},{$set:{status:1}});
+
+	  },
+	  'click #resolved':function(){
+	      console.log("resolved");
+	      console.log(this);
+	      id = this._id;
+	      
+	      Alerts.update({_id:id},{$set:{status:2}});
+	  }
+  });
+
+    Handlebars.registerHelper("firstAddress",
+			      function(arrayObject) {
+				  if (arrayObject && arrayObject.length > 0) {
+				      return arrayObject[0].address
+				  } else {
+				      return null;
+				  }
+			      });
 			      
-
-
 }
 if (Meteor.isServer) {
     Meteor.publish("allUsers", function () {
@@ -153,18 +171,22 @@ if (Meteor.isServer) {
         return Meteor.users.find({}, {fields: {"emails.address": 1}});
     });
   Meteor.startup(function () {
+
       Meteor.methods({
-	  'get_users_by_ids':function(userIds) {
-	      return Meteor.users.find({"_id":{"$in":userIds}}).fetch();
-	  },
-	  'get_all_users':function() {
-	      return Meteor.users.find({}).fetch();
-	  },
 	  'update_user':function(user) {
 	      Meteor.users.update({"_id":user._id});
 	  }
       });
   });
+    
+    Deps.autorun(function() {
+	var redAlerts = Alerts.find({alertLevel:2,status:0}).fetch();
+	
+	if (redAlerts){
+	    //alert("red alert!");
+	}
+    });
+
 }
 
 Meteor.users.allow({

@@ -1,17 +1,7 @@
 Alerts = new Meteor.Collection("alerts");
 
 if (Meteor.isClient) {
-  Template.hello.greeting = function () {
-    return "Welcome to codered.";
-  };
 
-  Template.hello.events({
-    'click input' : function () {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
-    }
-  });
 
 
   Template.main.events({

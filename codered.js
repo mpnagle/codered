@@ -55,11 +55,11 @@ if (Meteor.isClient) {
 
 
   Template.log.logEntries = function(){
-      var alertEvents = AlertEvents.find({}).fetch();
+      var alertEvents = AlertEvents.find({},{sort: {time:-1}}).fetch();
       if (alertEvents.length > 0) {
 	  alertEvents.map(function(event) {
 	      event.alert = Alerts.findOne({'_id':event.alertId});
-	      //event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
+	      event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
 	  });
       }
       return alertEvents;
@@ -78,13 +78,11 @@ if (Meteor.isClient) {
 	  friendIds = currentUser.friends;
       }
       var users = Meteor.users.find({"_id":{"$in":friendIds}}).fetch();
-      console.log(users);
       return users;
   };
 
   Template.friends.users = function() {
       var users = Meteor.users.find({}).fetch();
-      console.log(users);
       return users;
   };
   

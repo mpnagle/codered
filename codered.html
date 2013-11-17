@@ -3,11 +3,31 @@
 </head>
 
 <body>
-  {{> hello}}
+  
+  {{> loginButtons}}
+  {{#else}}
+  
+  {{> main}}
+  {{/if}}
 </body>
+
+
 
 <template name="hello">
   <h1>Hello World!</h1>
   {{greeting}}
   <input type="button" value="Click" />
+</template>
+
+<template name="main">
+
+  <h2>Alert Level: {{alertLevel}} </h2>
+<button id="red" class="btn btn-danger">RED</button>
+<button id="yellow" class="btn btn-warning">YELLOW</button>
+<button id="green" class="btn btn-success">GREEN</button>
+
+<p>
+<input type="text" id="message" placeholder="What's up?"/>
+<button type="submit" id="submit" class="btn">Submit</button>
+
 </template>

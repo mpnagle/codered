@@ -40,3 +40,33 @@ body {padding-right:0px;padding-left:0px;}
     padding-left: 20px;
     padding-right: 20px;
 }
+
+.button-list {
+    list-style:none;
+    text-align:center;
+    margin-left:0;
+    width:100%;
+}
+
+.button-list li {
+    margin-bottom:5px;
+    padding-left:5%;
+    padding-right:5%;
+    width:90%;
+}
+
+.button-list li button {
+    width:100%;   
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.button-list li textarea {
+    padding:1%;
+    height:100px;
+    width:98%;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}

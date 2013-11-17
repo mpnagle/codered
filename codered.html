@@ -51,14 +51,30 @@ Welcome to CodeRed
 
 <template name="main">
 
-  <h2>Alert Level: {{alertLevel}} </h2>
-<button id="red" class="btn btn-danger">RED</button>
-<button id="yellow" class="btn btn-warning">YELLOW</button>
-<button id="green" class="btn btn-success">GREEN</button>
+  <h2 class="text-center">CodeRed</h2>
+  <ul class="button-list">
+    <li>
+      <button id="red" class="btn btn-danger">RED</button>
+    </li>
+    <li>
+      <button id="yellow" class="btn btn-warning">YELLOW</button>
+    </li>
+    <li>
+      <button id="green" class="btn btn-success">GREEN</button>
+    </li>
+    <li><hr /></li>
+    <li>
+      <textarea id="message" placeholder="What's up?"></textarea>
+    </li>
+    <li><hr /></li>
+    <li>
+      <button type="submit" id="submit" class="btn">Submit</button>
+    </li>
+  </ul>
 
 <p>
-<input type="text" id="message" placeholder="What's up?"/>
-<button type="submit" id="submit" class="btn">Submit</button>
+
+
 
 </template>
 

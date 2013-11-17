@@ -1,5 +1,5 @@
 # IP or URL of the server you want to deploy to
-APP_HOST=
+APP_HOST=ec2-54-219-167-189.us-west-1.compute.amazonaws.com
 
 # If you want a different ROOT_URL, when using a load balancer for instance, set it here
 #ROOT_URL=mycustom.url.com
@@ -8,7 +8,7 @@ APP_HOST=
 EC2_PEM_FILE=~/Downloads/CodeRed.pem
 
 # What's your project's Git repo?
-GIT_URL=git://github.com/SachaG/Microscope.git
+GIT_URL=git://github.com/mpnagle/codered.git
 
 # Does your project use meteorite, or plain meteor?
 METEORITE=false
@@ -20,7 +20,7 @@ METEOR_RELEASE=0.6.6.3
 #MAIL_URL=smtp://USERNAME:PASSWORD@smtp.googlemail.com:465
 
 # What's your app name?
-APP_NAME=microscope
+APP_NAME=codered
 
 # If your app is not on the repository root, set this
 APP_PATH=.

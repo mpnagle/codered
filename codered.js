@@ -119,7 +119,7 @@ if (Meteor.isClient) {
 	  }[alertType];
       },
       firstAddress: function(arrayObject) {
-	  if (arrayObject.length > 0) {
+	  if (arrayObject && arrayObject.length > 0) {
 	      return arrayObject[0].address
 	  } else {
 	      return null;

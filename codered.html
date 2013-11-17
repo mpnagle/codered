@@ -22,13 +22,13 @@ Welcome to CodeRed
   <div id="wrap">
     <div class="container-fluid">
       <div class="tab-content">
-	<div class="tab-pane" id="home">
+	<div class="tab-pane active" id="home">
 	  <p>{{>main}}</p>
 	</div>
 	<div class="tab-pane" id="friends">
 	  <p>{{>friends}}</p>
 	</div>
-	<div class="tab-pane active" id="log">
+	<div class="tab-pane" id="log">
 	  {{>log}}
 	</div>
       </div>
@@ -51,8 +51,6 @@ Welcome to CodeRed
 
 
 <template name="main">
-
-  <h2 class="text-center">CodeRed</h2>
   <ul class="button-list">
     <li>
       <button id="red" class="btn btn-danger">RED</button>
@@ -63,11 +61,9 @@ Welcome to CodeRed
     <li>
       <button id="green" class="btn btn-success">GREEN</button>
     </li>
-    <li><hr /></li>
     <li>
       <textarea id="message" placeholder="What's up?"></textarea>
     </li>
-    <li><hr /></li>
     <li>
       <button type="submit" id="submit" class="btn">Submit</button>
     </li>
@@ -94,6 +90,10 @@ usernameHere sent a red alert at {{timestamp}}
 <template name="log">
   <ul id="loglist" class="nav nav-tabs nav-stacked">
 {{#each logEntries}}
+{{>logEntry}}
+{{>logEntry}}
+{{>logEntry}}
+{{>logEntry}}
 {{>logEntry}}
 {{/each}}
   </ul>  

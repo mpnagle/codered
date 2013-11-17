@@ -21,8 +21,9 @@ if (Meteor.isClient) {
 	  var lastObject = ""
 	  Alerts.insert({
 	      alertLevel: Session.get("alertLevel"), 
+	      status: 0,
 	      message: $("#message").val()
-		      },
+	      },
 	      function(error,result){
 		  
 		  AlertEvents.insert({
@@ -54,6 +55,47 @@ if (Meteor.isClient) {
   Template.log.logEntries = function(){
       return AlertEvents.find({}).fetch();
   }
+
+  Template.showRedAlerts.redAlert = function(){
+      
+      return Alerts.find({alertLevel:2, status:0}).fetch();
+  }
+
+
+  Template.friends.users = function()
+      {
+	  return Meteor.users.find({}).fetch();
+      }
+  
+  Template.friends.events({
+      'click #submit': function(){
+	  /* 
+	  emailAddress = $("#submit").val();
+	  
+	  var currentUser = Meteor.user();
+	  currentId = currentUser._id;
+	  if (currentUser.hasOwnProperty('friends'))
+	      {
+		  var friends = currentUser.friends;
+		  friends.append(emailAddress);
+
+	      }
+	  else
+	      {
+		  var friends = [emailAddress];
+	      }
+
+	  Meteor.users.update({_id:currentId},{$set:{"friends":friends}});
+
+      }
+      
+	  */
+      }});
+
+	  
+		  
+      
+
 
 }
 if (Meteor.isServer) {

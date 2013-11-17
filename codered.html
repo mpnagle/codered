@@ -25,7 +25,7 @@ Welcome to CodeRed
 	  <p>{{>main}}</p>
 	</div>
 	<div class="tab-pane" id="friends">
-	  <p>Friends Section</p>
+	  <p>{{>friends}}</p>
 	</div>
 	<div class="tab-pane" id="log">
 	  {{>log}}
@@ -51,6 +51,8 @@ Welcome to CodeRed
 
 <template name="main">
 
+{{> showRedAlerts}}
+
   <h2>Alert Level: {{alertLevel}} </h2>
 <button id="red" class="btn btn-danger">RED</button>
 <button id="yellow" class="btn btn-warning">YELLOW</button>
@@ -60,6 +62,21 @@ Welcome to CodeRed
 <input type="text" id="message" placeholder="What's up?"/>
 <button type="submit" id="submit" class="btn">Submit</button>
 
+</template>
+
+<template name="showRedAlerts">
+
+{{#each redAlert}}
+
+  <ul class="nav nav-tabs nav-stacked">
+<li><a href="#">
+usernameHere sent a red alert at {{timestamp}}
+
+<input type="checkbox">Acknowledged</>
+<input type="checkbox">Resolved</>
+  </ul>  
+{{/each}}
+</a></li>
 </template>
 
 <template name="log">
@@ -72,4 +89,22 @@ Welcome to CodeRed
 
 <template name = "logEntry">
   <li><a href="#">Alert number {{alertId}} was {{state}} at {{time}}</a></li>
+</template>
+
+<template name = "friends">
+
+<ul class="nav nav-tabs nav-stacked">
+{{#each users}}
+
+<li><a href="#">
+  
+  {{_id}}
+  
+</a></li>
+{{/each}}
+
+Add Friend's Email Here: <input type="text" id="add friend"/>
+<button type="button" id="submit" class="btn">Submit</button>
+
+</ul>
 </template>

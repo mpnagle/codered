@@ -10,3 +10,5 @@ preserve-inputs
 accounts-ui
 accounts-base
 accounts-password
+bootstrap
+jquery

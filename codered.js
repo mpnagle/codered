@@ -25,8 +25,8 @@ if (Meteor.isClient) {
 	  Alerts.insert({
 	      alertLevel: Session.get("alertLevel"), 
 	      status: 0,
-	      message: $("#message").val()
-	      "userId":Meteor.userId()
+	      message: $("#message").val(),
+	      "userId":Meteor.user()._id
 		      },
 
 	      function(error,result){
@@ -64,13 +64,13 @@ if (Meteor.isClient) {
       if (alertEvents.length > 0) {
 	  alertEvents.map(function(event) {
 	      event.alert = Alerts.findOne({'_id':event.alertId});
-	      event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
+	      //event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
 	  });
       }
       return alertEvents;
   }
 
-<<<<<<< HEAD
+
   Template.showRedAlerts.redAlert = function(){
       
       return Alerts.find({alertLevel:2, status:0}).fetch();
@@ -139,11 +139,46 @@ if (Meteor.isClient) {
 	  }
       }
   });
+  
+  Template.redAlertCheckbox.events({
+	  
+	  'click #acknowledged':function(){
+	      console.log("acknowledged");
 
+	      id = this._id;
+	      
+	      Alerts.update({_id:id},{$set:{status:1}});
+
+	  },
+	      'click #resolved':function(){
+		  console.log("resolved");
+		  console.log(this);
+
+		  id = this._id;
+		  
+		  Alerts.update({_id:id},{$set:{status:2}});
+	      }
+      });
 
 }
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    // code to run on server at startup
-  });
+	  
+	  
+	  
+	  Deps.autorun(function() {
+		  var redAlerts = Alerts.find({alertLevel:2,status:0}).fetch();
+		  
+		  if (redAlerts){
+		      //alert("red alert!");
+		  }
+	      });
+      });
+		      
+  
+
+
+
+
+  
 }

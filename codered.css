@@ -12,6 +12,7 @@ body {
 body {padding-right:0px;padding-left:0px;}
 
 .nav-tabs.nav-stacked > li:last-child > a { border-bottom-right-radius:0px;border-bottom-left-radius:0px}
+.nav-tabs.nav-stacked > li:first-child > a { border-top-right-radius:0px;border-top-left-radius:0px}
 
 
 /* Wrapper for page content to push down footer */
@@ -70,3 +71,5 @@ body {padding-right:0px;padding-left:0px;}
     -moz-border-radius: 0px;
     border-radius: 0px;
 }
+
+.alert-icon {float:right;opacity:.7;}

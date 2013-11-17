@@ -24,7 +24,8 @@ if (Meteor.isClient) {
 	  var lastObject = ""
 	  Alerts.insert({
 	      alertLevel: Session.get("alertLevel"), 
-	      message: $("#message").val()
+	      message: $("#message").val(),
+	      "userId":Meteor.userId()
 		      },
 	      function(error,result){
 		  
@@ -54,9 +55,46 @@ if (Meteor.isClient) {
       return Session.get("alertLevel");
   }
 
+
+
   Template.log.logEntries = function(){
-      return AlertEvents.find({}).fetch();
+      var alertEvents = AlertEvents.find({}).fetch();
+      if (alertEvents.length > 0) {
+	  alertEvents.map(function(event) {
+	      event.alert = Alerts.findOne({'_id':event.alertId});
+	      event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
+	  });
+      }
+      return alertEvents;
   }
+
+  Template.logEntry.helpers({
+      icon_map: function(alertType) {
+	  return {
+	      "created":"icon-plus-sign"
+	  }[alertType];
+      },
+      firstAddress: function(arrayObject) {
+	  if (arrayObject.length > 0) {
+	      return arrayObject[0].address
+	  } else {
+	      return null;
+	  }
+      },
+      timeAgo:function(time) {
+	  var now = new Date().getTime();
+	  var elapsed = (now-time)/1000;
+	  if (elapsed > 60*60*24) {
+	      return Math.round(elapsed/(60*60*24)) + " days ago";
+	  } else if (elapsed > 60*60) {
+	      return Math.round(elapsed/60*60) + " hours ago";
+	  } else if (elapsed > 60) {
+	      return Math.round(elapsed/60) + " minutes ago";
+	  } else {
+	      return Math.round(elapsed) + " seconds ago";
+	  }
+      }
+  });
 
 }
 if (Meteor.isServer) {

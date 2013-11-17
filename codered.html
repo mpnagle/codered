@@ -72,10 +72,6 @@ Welcome to CodeRed
     </li>
   </ul>
 
-<p>
-
-
-
 </template>
 
 <template name="log">
@@ -87,5 +83,11 @@ Welcome to CodeRed
 </template>
 
 <template name = "logEntry">
-  <li><a href="#">Alert number {{alertId}} was {{state}} at {{time}}</a></li>
+  <li>
+    <a href="#">
+      <i class="{{icon_map state}} alert-icon"></i>
+      {{firstAddress user.emails}} sent a {{state}} alert<br/>
+      <i class="muted">{{timeAgo time}}
+    </a>
+  </li>
 </template>

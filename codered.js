@@ -3,6 +3,9 @@ AlertEvents = new Meteor.Collection("alertsevents");
 
 if (Meteor.isClient) {
 
+    Meteor.subscribe("allUsers");
+    Meteor.subscribe("allUserData");
+
 
 
   Template.main.events({
@@ -34,16 +37,16 @@ if (Meteor.isClient) {
 	      alertLevel: Session.get("alertLevel"), 
 	      status: 0,
 	      message: $("#message").val(),
-	      "userId":Meteor.userId()
-		      },
-
+	      "userId":Meteor.userId()},
 	      function(error,result){
 		  
 		  AlertEvents.insert({
 			  "alertId": result,
 			  "state":"created",
 			  "time": (new Date()).getTime(),
+		          "author":Meteor.userId()
 		      });
+
 	      }
 	      );
 	  
@@ -56,6 +59,9 @@ if (Meteor.isClient) {
 	  //		  ));
 	      //	  AlertEvents.insert({
 	  console.log($("#message").val());
+
+	      });
+
       }
   });
 
@@ -68,11 +74,12 @@ if (Meteor.isClient) {
 
 
   Template.log.logEntries = function(){
-      var alertEvents = AlertEvents.find({}).fetch();
+      var alertEvents = AlertEvents.find({},{sort: {time:-1}}).fetch();
       if (alertEvents.length > 0) {
 	  alertEvents.map(function(event) {
 	      event.alert = Alerts.findOne({'_id':event.alertId});
-	      //event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
+	      event.user = Meteor.users.findOne({'_id':event.alert.userId});	  
+	      event.author = Meteor.users.findOne({'_id':event.author});	  
 	  });
       }
       return alertEvents;
@@ -84,33 +91,54 @@ if (Meteor.isClient) {
       return Alerts.find({alertLevel:2, status:0}).fetch();
   }
 
-
-  Template.friends.users = function()
-      {
-	  return Meteor.users.find({}).fetch();
+  Template.friends.friends = function() {
+      var friendIds = [];
+      var currentUser = Meteor.user();
+      if (currentUser.hasOwnProperty("friends")) {
+	  friendIds = currentUser.friends;
       }
+      var users = Meteor.users.find({"_id":{"$in":friendIds}}).fetch();
+      return users;
+  };
+
+  Template.friends.users = function() {
+      var users = Meteor.users.find({}).fetch();
+      return users;
+  };
   
   Template.friends.events({
       'click #submit': function(){
-      }});
-
-	  
-		  
-      
+	  var contactId = $('#friendtoadd').val();
+	  var currentUser = Meteor.user();
+	  if (!currentUser.hasOwnProperty("friends")) {
+	      currentUser.friends = [];
+	  }
+	  if (currentUser.friends.indexOf(contactId) == -1) {
+	      currentUser.friends.push(contactId);
+	  }
+	  Meteor.users.update(currentUser._id,{"$set":{"friends":currentUser.friends}});
+      },
+      'click .removeUser': function(event){
+	  var contactId = $(event.target).data("userid");
+	  var currentUser = Meteor.user();
+	  if (!currentUser.hasOwnProperty("friends")) {
+	      currentUser.friends = [];
+	  }
+	  if (currentUser.friends.indexOf(contactId) != -1) {
+	      currentUser.friends.splice(currentUser.friends.indexOf(contactId),1);
+	  }
+	  Meteor.users.update(currentUser._id,{"$set":{"friends":currentUser.friends}});
+      }
+  });
 
 
   Template.logEntry.helpers({
       icon_map: function(alertType) {
 	  return {
-	      "created":"icon-plus-sign"
+	      "created":"icon-bell",
+	      "acknowledged":"icon-eye-open",
+	      "resolved":"icon-check"
 	  }[alertType];
-      },
-      firstAddress: function(arrayObject) {
-	  if (arrayObject && arrayObject.length > 0) {
-	      return arrayObject[0].address
-	  } else {
-	      return null;
-	  }
       },
       timeAgo:function(time) {
 	  var now = new Date().getTime();
@@ -130,6 +158,12 @@ if (Meteor.isClient) {
   Template.redAlertCheckbox.events({
 	  
 	  'click #acknowledged':function(){
+	      AlertEvents.insert({
+		  "alertId":this._id,
+		  "state":"acknowledged",
+		  "time":(new Date()).getTime(),
+		  "author":Meteor.user()._id
+	      });
 	      console.log("acknowledged");
 
 	      id = this._id;
@@ -137,19 +171,55 @@ if (Meteor.isClient) {
 	      Alerts.update({_id:id},{$set:{status:1}});
 
 	  },
-	      'click #resolved':function(){
-		  console.log("resolved");
-		  console.log(this);
+	  'click #resolved':function(){
+	      AlertEvents.insert({
+		  "alertId":this._id,
+		  "state":"resolved",
+		  "time":(new Date()).getTime(),
+		  "author":Meteor.user()._id
+	      });
+	      console.log("resolved");
+	      console.log(this);
+	      id = this._id;
+	      
+	      Alerts.update({_id:id},{$set:{status:2}});
+	  }
+  });
 
-		  id = this._id;
-		  
-		  Alerts.update({_id:id},{$set:{status:2}});
-	      }
-      });
+    Handlebars.registerHelper("firstAddress",
+			      function(arrayObject) {
+				  if (arrayObject && arrayObject.length > 0) {
+				      return arrayObject[0].address
+				  } else {
+				      return null;
+				  }
+			      });
 
+    Handlebars.registerHelper("logMessage",
+			      function(alert,author,state,user) {
+				  console.log(state);
+				  if (state == "created") {
+				      return user.emails[0].address + " created an alert: " + alert.message;
+				  } else if (state == "acknowledged") {
+				      console.log(author);
+				      return author.emails[0].address + " acknowledged "+user.emails[0].address + "'s alert";
+				  } else if (state == "resolved") {
+				      return author.emails[0].address + " resolved "+user.emails[0].address + "'s alert";
+				  } else {
+				      return "";
+				  }
+			      });
+			      
 }
 if (Meteor.isServer) {
+    Meteor.publish("allUsers", function () {
+        return Meteor.users.find({});
+    });
+    Meteor.publish("allUserData", function () {
+        return Meteor.users.find({}, {fields: {"emails.address": 1}});
+    });
   Meteor.startup(function () {
+
 
 
 	  Meteor.methods({
@@ -185,5 +255,31 @@ if (Meteor.isServer) {
 
 
 
-  
+      Meteor.methods({
+	  'update_user':function(user) {
+	      Meteor.users.update({"_id":user._id});
+	  }
+      });
+  });
+    
+    Deps.autorun(function() {
+	var redAlerts = Alerts.find({alertLevel:2,status:0}).fetch();
+	
+	if (redAlerts){
+	    //alert("red alert!");
+	}
+    });
+
 }
+
+Meteor.users.allow({
+    "insert":function(userId,checkin) {
+	return true;
+    },
+    "remove":function(userId,checkin) {
+	return true;
+    },
+    "update":function(userId,checkin) {
+	return true;
+    }
+});

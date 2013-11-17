@@ -23,6 +23,8 @@ Welcome to CodeRed
     <div class="container-fluid">
       <div class="tab-content">
 	<div class="tab-pane active" id="home">
+	  <p>{{>showRedAlerts}}</p>
+	  
 	  <p>{{>main}}</p>
 	</div>
 	<div class="tab-pane" id="friends">
@@ -74,18 +76,31 @@ Welcome to CodeRed
 
 <template name="showRedAlerts">
 
+  <ul class="nav nav-tabs nav-stacked">
+
 {{#each redAlert}}
 
-  <ul class="nav nav-tabs nav-stacked">
-<li><a href="#">
-usernameHere sent a red alert at {{timestamp}}
+{{>redAlertCheckbox}}
 
-<input type="checkbox">Acknowledged</>
-<input type="checkbox">Resolved</>
-  </ul>  
 {{/each}}
+
+
+
+</ul>
+</template>
+
+
+<template name="redAlertCheckbox">
+<li><a href="#">
+red alert sent at {{timestamp}}
+
+<input id="acknowledged" type="checkbox">Acknowledged</>
+<input id="resolved" type="checkbox">Resolved</>
+
+
 </a></li>
 </template>
+
 
 <template name="log">
   <ul id="loglist" class="nav nav-tabs nav-stacked">

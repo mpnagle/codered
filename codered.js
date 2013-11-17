@@ -87,7 +87,7 @@ if (Meteor.isClient) {
 	  if (elapsed > 60*60*24) {
 	      return Math.round(elapsed/(60*60*24)) + " days ago";
 	  } else if (elapsed > 60*60) {
-	      return Math.round(elapsed/60*60) + " hours ago";
+	      return Math.round(elapsed/(60*60)) + " hours ago";
 	  } else if (elapsed > 60) {
 	      return Math.round(elapsed/60) + " minutes ago";
 	  } else {

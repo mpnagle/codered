@@ -1,11 +1,19 @@
 /* CSS declarations go here */
 #navbar {margin-left:6%;padding-top:12px;}
 #navbar li {padding-left:1%;margin-left:1%;padding-right:1%;}
-.nav-pills li a {background-color:#FAFAFF;border:solid 1px #CCC;}
+.nav-pills li a {
+    background-color:#333;
+    border:solid 1px #CCC;
+    color:#FFF;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
 #navbar li:last-child {border-right:none;}
 html,
 body {
     height: 100%;
+    font-weight:300;
 /* The html and body elements cannot have any padding or margin. */
 }
 
@@ -29,7 +37,8 @@ body {padding-right:0px;padding-left:0px;}
     height: 60px;
 }
 #footer {
-    background-color: #f5f5f5;
+    background-color: #c0c0c0;
+    border-top:solid thin #AAA;
     position:fixed;
     width:100%;
 }
@@ -72,4 +81,7 @@ body {padding-right:0px;padding-left:0px;}
     border-radius: 0px;
 }
 
-.alert-icon {float:right;opacity:.7;}
+#loglist {color:#333;font-weight:300;}
+#loglist li a, #loglist li {color:#333;}
+.log-details {position:relative;left:6px;top:2px;}
+

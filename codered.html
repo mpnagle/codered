@@ -4,10 +4,18 @@
 </head>
 
 <body>
-  {{>nav}}
+  {{#if currentUser}}
+  {{> nav}}
+  {{else}}
+  {{> login}}
+  {{/if}}
 </body>
 
-
+<template name="login">
+Welcome to CodeRed
+<p>
+{{loginButtons}}
+</template>
 
 <template name="nav">
   <div id="wrap">

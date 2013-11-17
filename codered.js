@@ -8,12 +8,15 @@ if (Meteor.isClient) {
   Template.main.events({
       'click #red' : function() {
 	  Session.set("alertLevel", 2);
+	  $('body').css("background-color","#FFE0E0");
       },
       'click #yellow' : function() {
 	  Session.set("alertLevel", 1);
+	  $('body').css("background-color","#faF7D2");
       },
       'click #green' : function() {
 	  Session.set("alertLevel", 0);
+	  $('body').css("background-color","#E4FFE4");
       },
       
       'click #submit' : function() {

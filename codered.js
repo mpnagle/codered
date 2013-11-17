@@ -21,11 +21,11 @@ if (Meteor.isClient) {
       
       'click #submit' : function() {
 	  
-	  var lastObject = ""
+	  var lastObject = "";
 	  Alerts.insert({
 	      alertLevel: Session.get("alertLevel"), 
 	      status: 0,
-	      message: $("#message").val()
+	      message: $("#message").val(),
 	      "userId":Meteor.userId()
 		      },
 
@@ -70,7 +70,6 @@ if (Meteor.isClient) {
       return alertEvents;
   }
 
-<<<<<<< HEAD
   Template.showRedAlerts.redAlert = function(){
       
       return Alerts.find({alertLevel:2, status:0}).fetch();
